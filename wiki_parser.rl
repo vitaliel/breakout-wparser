@@ -26,7 +26,7 @@ module Breakout
     end_br = ']]';
 
     ticket_re = ( "#" digit+ ) >mark %old_ticket;
-    svn_re = space+ ("r" digit+ ) >mark %old_svn;
+    svn_re = space ("r" digit+ ) >mark %old_svn;
     git_re = ( "[" xdigit{7,} "]") >mark %old_git;
 
     # templates
@@ -72,18 +72,18 @@ module Breakout
 
     def add_ticket_tmpl
       t = data[start+7..p-3]
-      @blocks << [:ticket, "##{t}", t] if t.length > 0
+      @blocks << [:ticket, t] if t.length > 0
     end
 
     def add_ticket
       return if start > p
       # puts(start, @p)
-      @blocks << [ctx, data[start..p-1], data[start + 1..p-1]]
+      @blocks << [ctx, data[start + 1..p-1]]
       # puts @blocks.last.inspect
     end
 
     def add_svn
-      @blocks << [ctx, data[start..p-1], data[start + 1..p-1]]
+      @blocks << [ctx, data[start + 1..p-1]]
     end
 
     def add_git

@@ -10,16 +10,16 @@ class WikiParserTest < Test::Unit::TestCase
 
   def test_ticket_links
     check '#20, #22434343, #24, #33',
-    [[:ticket, "#20", "20"], [:chars, ", "], [:ticket, "#22434343", "22434343"], [:chars, ", "], [:ticket, "#24", "24"], [:chars, ", "], [:ticket, "#33", "33"]]
+    [[:ticket, "20"], [:chars, ", "], [:ticket, "22434343"], [:chars, ", "], [:ticket, "24"], [:chars, ", "], [:ticket, "33"]]
   end
 
   def test_short_ticket
-    check "#1 >#2< #3e # #e4 #6", [[:ticket, "#1", "1"], [:chars, " >"], [:ticket, "#2", "2"], [:chars, "< "], [:ticket, "#3", "3"], [:chars, "e # #e4 "], [:ticket, "#6", "6"]]
+    check "#1 >#2< #3e # #e4 #6", [[:ticket, "1"], [:chars, " >"], [:ticket, "2"], [:chars, "< "], [:ticket, "3"], [:chars, "e # #e4 "], [:ticket, "6"]]
   end
 
   def test_svn_rev
-    check 'Fixed in r1234', [[:chars, "Fixed in "], [:svn, "r1234", "1234"]]
-    check 'r1234 contains fix', [[:svn, "r1234", "1234"], [:chars, " contains fix"]]
+    check 'Fixed in r1234', [[:chars, "Fixed in "], [:svn, "1234"]]
+    check 'r1234 contains fix', [[:svn, "1234"], [:chars, " contains fix"]]
   end
 
   def test_git_rev
@@ -28,11 +28,11 @@ class WikiParserTest < Test::Unit::TestCase
 
   def test_ticket_template
     check "[[ticket:1]] >[[ticket:2]]< [[ticket:3e]] [[ticket:e4]] [[ticket:6]]",
-    [[:ticket, "#1", "1"],
+    [[:ticket, "1"],
      [:chars, " >"],
-     [:ticket, "#2", "2"],
+     [:ticket, "2"],
      [:chars, "< [[ticket:3e]] [[ticket:e4]] "],
-     [:ticket, "#6", "6"]]
+     [:ticket, "6"]]
   end
 
   def test_old_commits
