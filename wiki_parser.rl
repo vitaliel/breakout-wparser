@@ -25,8 +25,12 @@ module Breakout
     start_br = '[[';
     end_br = ']]';
 
-    ticket_re = ( "#" digit+ ) >mark %old_ticket;
-    svn_re = space ("r" digit+ ) >mark %old_svn;
+    # ---------- start and end delimiters ------------
+    sdm = [\.,:;\-\[\(){}>] | space | '&nbsp;';
+    edm = [\.,:;\-\]\(){}<] | space | '&nbsp;' | EOF;
+
+    ticket_re = sdm ( "#" digit+ ) >mark %old_ticket edm;
+    svn_re = sdm ("r" digit+ ) >mark %old_svn edm;
     git_re = ( "[" xdigit{7,} "]") >mark %old_git;
 
     # templates

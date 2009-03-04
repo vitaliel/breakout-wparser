@@ -14,7 +14,7 @@ class WikiParserTest < Test::Unit::TestCase
   end
 
   def test_short_ticket
-    check "#1 >#2< #3e # #e4 #6", [[:ticket, "1"], [:chars, " >"], [:ticket, "2"], [:chars, "< "], [:ticket, "3"], [:chars, "e # #e4 "], [:ticket, "6"]]
+    check "#1 >#2< #3e # #e4 #6", [[:ticket, "1"], [:chars, " >"], [:ticket, "2"], [:chars, "< #3e # #e4 "], [:ticket, "6"]]
   end
 
   def test_svn_rev
@@ -36,7 +36,16 @@ class WikiParserTest < Test::Unit::TestCase
   end
 
   def test_old_commits
-    check '2>1 and 2<3.r für3 r1 [2] [we] (r3: r4e) [2efc5a4b8d]', []
+    check '2>1 and 2<3.r für3 r1 [2] [we] (r3: r4e) [2efc5a4b8d]', [
+      [:chars, "2>1 and 2<3.r für3 "],
+      [:svn, "1"],
+      [:chars, " "],
+      [:git, "2"],
+      [:chars, " [we] ("],
+      [:svn, "3"],
+      [:chars, ": r4e) "],
+      [:git, "2efc5a4b8d"]
+    ]
   end
 
   def check(str, rez)
